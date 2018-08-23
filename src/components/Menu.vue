@@ -21,13 +21,13 @@
     <el-menu-item index="3">消息中心</el-menu-item>
     <el-menu-item index="4">订单管理</el-menu-item>
 
-    <el-input v-model="input" placeholder="请输入内容"
+    <el-input v-model="menudata.input" placeholder="请输入内容"
               style="width: 20%;height: 20%;position: relative;margin-top: 0.67%;margin-left: 35%"></el-input>
-    <el-button type="primary" icon="el-icon-search">搜索</el-button>
+    <el-button type="primary" icon="el-icon-search" @click="toserch">搜索</el-button>
 
     <el-dropdown style="position: relative;">
        <span class="el-dropdown-link" style="color: #ff6daf">
-          {{name}}
+          {{menudata.name}}
          <i class="el-icon-arrow-down el-icon--right"></i>
        </span>
       <el-dropdown-menu slot="dropdown">
@@ -44,11 +44,18 @@
 <script>
   export default {
     name: 'Menu',
-    data() {
-      return {
-        input: '',
-        name: '欢迎，jascola！'
+    props: {
+      menudata: {
+        type: Object
       }
+    },
+    methods: {
+      toserch: function () {
+        this.$emit("serch", {});
+      }
+    },
+    data() {
+      return {}
     }
   }
 </script>

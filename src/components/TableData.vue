@@ -1,29 +1,10 @@
 <template>
   <div>
-    <el-dialog title="增加相册" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="相册名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
-
     <el-table
-      :data="banner"
+      :data="tabledata.banner"
       style="width: 100%"
     >
       <el-table-column type="expand" label="详细" fixed>
-
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="相册id">
@@ -36,7 +17,8 @@
               <span style="color: #dd6161">{{ props.row.imgDiscrete }}</span>
             </el-form-item>
             <el-form-item label="征途">
-              <img :src="props.row.imgPath" width="400px" height="400px"/>
+              <a href="javascript:void(0);" @click="router(props.row.imgPath,props.row.id)"><img
+                :src="props.row.imgPath" width="400px" height="400px"/></a>
             </el-form-item>
           </el-form>
         </template>
@@ -52,7 +34,7 @@
       <el-table-column prop="imgPath" label="图片路径">
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" v-if="tabledata.adminseen">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -66,7 +48,7 @@
           <el-button
             size="mini"
             type="primary"
-            @click="sheet()">添加
+            @click="handleAdd(scope.$index, scope.row)">添加
           </el-button>
 
         </template>
@@ -80,46 +62,23 @@
     name: "TableData",
     methods: {
       handleEdit(index, row) {
-        console.log(index);
-        console.log(row.id, row.imgPath);
+        this.$emit('edit', {index: index, row: row})
       },
       handleDelete(index, row) {
-        console.log(index);
-        console.log(row.id, row.imgPath);
+        this.$emit('delete', {index: index, row: row})
       },
-      sheet() {
-        console.log(this.dialogFormVisible);
-        this.dialogFormVisible = true;
+      handleAdd(index, row) {
+        this.$emit('add', {index: index, row: row})
+      },
+      router(path,id){
+        this.$emit('router', {path: path, id: id})
       }
     },
+    props: {
+      tabledata: {}
+    },
     data() {
-      const x = [{
-
-        id: '222',
-        imgDiscrete:
-          'fuck',
-        imgPath: 'http://localhost:8089/images/1/3.jpg'
-
-      }, {
-        id: '111',
-        imgDiscrete:
-          'fucks',
-        imgPath: 'http://localhost:8089/images/1/5.jpg'
-      }, {
-        id: '111',
-        imgDiscrete:
-          'fucks',
-        imgPath: 'http://localhost:8089/images/1/4.jpg'
-      }];
-      return {
-        banner: x,
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          region: ''
-        },
-        formLabelWidth: '120px'
-      }
+      return {}
     }
   }
 </script>

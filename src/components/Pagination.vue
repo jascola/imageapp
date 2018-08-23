@@ -1,5 +1,5 @@
 <template>
-  <div class="block">
+  <div class="block" style="position: relative;margin-left: 25%">
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -17,24 +17,21 @@
       name:'Pagination',
       methods: {
         handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+          this.$emit('sizeChange',val)
         },
         handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
+          this.$emit('currentChange',val)
           //这里写页面跳转
-        },
-        ss:function () {
-          return 400;
+        }
+      },
+      props:{
+        pagination:{
+
         }
       },
       data() {
         return {
-          pagination:{
-            total:this.ss(),
-            pagesize:[10,20,30,40],
-            defaultsize:10,
-            currentpage:1
-          }
+
         };
       }
     }
