@@ -42,15 +42,14 @@
           </el-button>
           <el-button
             size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除
-          </el-button>
-          <el-button
-            size="mini"
             type="primary"
             @click="handleAdd(scope.$index, scope.row)">添加
           </el-button>
-
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

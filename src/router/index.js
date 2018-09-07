@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Content from '../components/Content'
 import SingleImage from '../components/SingleImage'
 import HelloWorld from '../components/HelloWorld'
+import UserContent from '../components/UserContent'
 import Vuex from 'vuex'
 
 Vue.use(Router);
@@ -23,6 +24,11 @@ export default new Router({
       name:'HelloWorld',
       path: '/hello',
       component:HelloWorld
+    },
+    {
+      name:'UserContent',
+      path: '/user',
+      component:UserContent
     }
   ]
 })

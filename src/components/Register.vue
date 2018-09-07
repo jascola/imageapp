@@ -2,16 +2,16 @@
   <el-form :model="ruleForm" :rules="rules" style="position: relative;margin-left : 38%;margin-top: 10%"
            ref="ruleForm" label-width="100px" class="demo-ruleForm" size="mini">
     <el-form-item label="账号" prop="number">
-      <el-input v-model="ruleForm.number" v-bind:style="inputcss"></el-input>
+      <el-input v-model="ruleForm.number" :style="inputcss"></el-input>
     </el-form-item>
     <el-form-item label="邮箱" prop="email">
-      <el-input v-model="ruleForm.email" v-bind:style="inputcss"></el-input>
+      <el-input v-model="ruleForm.email" :style="inputcss"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" v-bind:style="inputcss"></el-input>
+      <el-input v-model="ruleForm.password" :style="inputcss"></el-input>
     </el-form-item>
     <el-form-item label="验证码" prop="validcode">
-      <el-input v-model="ruleForm.validcode" v-bind:style="inputcss"></el-input>
+      <el-input v-model="ruleForm.validcode" :style="inputcss"></el-input>
     </el-form-item>
     <el-form-item>
       <img src="link"/>
