@@ -4,6 +4,7 @@ import Content from '../components/Content'
 import SingleImage from '../components/SingleImage'
 import HelloWorld from '../components/HelloWorld'
 import UserContent from '../components/UserContent'
+import Login from '../components/Login'
 import Vuex from 'vuex'
 
 Vue.use(Router);
@@ -29,6 +30,11 @@ export default new Router({
       name:'UserContent',
       path: '/user',
       component:UserContent
+    },
+    {
+      name:'Login',
+      path:'/login',
+      component:Login
     }
   ]
 })

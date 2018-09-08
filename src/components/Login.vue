@@ -7,12 +7,12 @@
     <el-form-item label="密码" prop="password">
       <el-input v-model="ruleForm.password" :style="inputcss"></el-input>
     </el-form-item>
-    <el-form-item label="验证码" prop="validcode">
+    <!--<el-form-item label="验证码" prop="validcode">
       <el-input v-model="ruleForm.validcode" :style="inputcss"></el-input>
     </el-form-item>
     <el-form-item>
       <img src="link"/>
-    </el-form-item>
+    </el-form-item>-->
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import qs from 'qs';
   export default {
     data() {
       return {
@@ -40,10 +41,10 @@
           ],
           password: [
             {required: true, message: '请输入密码', trigger: 'blur'}
-          ],
+          ]/*,
           validcode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
-          ]
+          ]*/
         }
       };
     },
@@ -51,7 +52,11 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.axios.post('http://localhost:8089/test/user/login.html',qs.stringify(
+              {phone:this.ruleForm.number,password:this.ruleForm.password}
+            )).then(res=>{
+              console.log(res.data);
+            });
           } else {
             console.log('error submit!!');
             return false;
