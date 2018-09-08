@@ -55,7 +55,15 @@
             this.axios.post('http://localhost:8089/test/user/login.html',qs.stringify(
               {phone:this.ruleForm.number,password:this.ruleForm.password}
             )).then(res=>{
-              console.log(res.data);
+              if(res.data.status==="success"){
+                alert(res.data.messages[0]);
+                this.$router.push({
+                  name: 'Content',
+                  query: {
+                    content:res.data.messages[1]
+                  }
+                });
+              }
             });
           } else {
             console.log('error submit!!');

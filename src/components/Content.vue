@@ -187,7 +187,7 @@
         /*菜单数据*/
         menudata: {
           input: '',
-          name: 'jascola,欢迎你！'
+          name: this.$route.query.content
         },
 
         /*表格数据*/
