@@ -9,15 +9,20 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Vuex from 'vuex'
+import store from './store'
+
 
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(Vuex);
 axios.defaults.withCredentials = true;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 });

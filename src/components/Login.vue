@@ -56,12 +56,11 @@
               {phone:this.ruleForm.number,password:this.ruleForm.password}
             )).then(res=>{
               if(res.data.status==="success"){
-                alert(res.data.messages[0]);
+                this.$message.success(res.data.messages[0]);
+                this.$store.commit('login');
+                this.$store.commit('setMessage',res.data.messages[1]);
                 this.$router.push({
-                  name: 'Content',
-                  query: {
-                    content:res.data.messages[1]
-                  }
+                  name: 'Content'
                 });
               }
             });

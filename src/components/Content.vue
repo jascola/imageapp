@@ -81,6 +81,21 @@
   import TableData from './TableData'
 
   export default {
+    beforeCreate:function(){
+        this.axios.get('http://localhost:8089/test/user/check.html'
+        ).then(res => {
+          if (res.data.status === "success") {
+            this.$store.commit('login');
+            this.menudata.name = res.data.messages[0];
+          }
+          else {
+            this.$message.error("登录失效，请登录！");
+            this.$router.push({
+              name: 'Login'
+            });
+          }
+        });
+    },
     components: {Carousel, Menu, Pagination, TableData},
     methods: {
       /*跳转函数*/
@@ -187,7 +202,7 @@
         /*菜单数据*/
         menudata: {
           input: '',
-          name: this.$route.query.content
+          name: ''
         },
 
         /*表格数据*/
