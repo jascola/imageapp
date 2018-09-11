@@ -14,19 +14,51 @@
       <!--对话框-->
       <el-dialog title="增加相册" :visible.sync="dialogFormVisible.add_dialog_seen">
         <el-form :model="form">
+          <el-form-item label="相册ID" :label-width="form.formLabelWidth">
+            <el-input v-model="form.id" auto-complete="off"></el-input>
+          </el-form-item>
           <el-form-item label="相册名称" :label-width="form.formLabelWidth">
-            <el-input v-model="form.name" auto-complete="off"></el-input>
+            <el-input v-model="form.picname" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="活动区域" :label-width="form.formLabelWidth">
-            <el-select v-model="form.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
+          <el-form-item label="作者名" :label-width="form.formLabelWidth">
+            <el-input v-model="form.authorname" auto-complete="off"></el-input>
           </el-form-item>
+          <el-form-item label="标签" :label-width="form.formLabelWidth">
+            <div v-for="x in form.tag">
+            <el-button type="primary" >{{x.text}}</el-button>
+            </div>
+            <el-button type="primary" @click="">添加</el-button>
+          </el-form-item>
+
+          <!--文件上传-->
+          <el-upload
+            multiple
+            action=""
+            list-type="picture-card"
+            :auto-upload="false"
+            :http-request="uploadFile"
+            ref="upload"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+
+          <el-upload
+            action=""
+            list-type="picture-card"
+            :auto-upload="false"
+            :http-request="uploadFile2"
+            ref="upload2"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+
+
+          <el-button @click="subPicForm">上传</el-button>
+
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.add_dialog_seen = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible.add_dialog_seen = false">确 定</el-button>
+          <el-button type="primary" @click="submitEditDialog()">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -114,6 +146,16 @@
 
     components: {Carousel, Menu, Pagination, TableData},
     methods: {
+      addtag:function(){
+        this.form.tag.push({text:'jascola'});
+      },
+
+      submitEditDialog:function(){
+
+
+
+        this.dialogFormVisible.edit_dialog_seen = false;
+      },
       /*跳转函数*/
       router(data) {
         this.$router.push({
@@ -126,8 +168,14 @@
       },
       /*编辑*/
       handleEdit(data) {
-        console.log(data.index);
-        console.log(data.row.id, data.row.imgPath);
+        this.form.id = data.row.id;
+        this.form.picname = data.row.picname;
+        this.form.authorname = data.row.authorname;
+        let x = data.row.tag.split(',');
+        this.form.tag = [];
+        for (let i=0;i<x.length;i++){
+          this.form.tag.push({text:x[i]});
+        }
         this.dialogFormVisible.edit_dialog_seen = true;
       },
       /*删除*/
@@ -191,6 +239,39 @@
         });
       }
     },
+    uploadFile(file){
+      this.formDate.append('images', file.file);
+    },
+    uploadFile2(file){
+      this.formDate.append('image', file.file);
+    },
+
+    subPicForm(){
+      this.formDate = new FormData();
+      this.$refs.upload.submit();
+      this.$refs.upload2.submit();
+      this.formDate.append('id', this.form.id);
+      this.formDate.append('picname', this.form.picname);
+      this.formDate.append('authorname', this.form.authorname);
+      let you="";
+      for(let i=0;i<this.form.tag.length;i++){
+        if(i!=this.form.tag.length-1){
+          you = you + this.form.tag[i].text +',';
+        }
+      }
+      this.formDate.append('tag', you);
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      axios.post("http://localhost:8089/test/pic/upload.html", this.formDate,config).then( res => {
+        console.log(res)
+      }).catch( res => {
+        console.log(res)
+      })
+    }
+    ,
 
     data() {
       return {
@@ -215,10 +296,13 @@
 
         /*dailog表单数据*/
         form: {
-          name: '',
-          region: '',
+          id: null,
+          picname: null,
+          authorname: null,
+          tag: null,
           formLabelWidth: '120px', /*dailog样式*/
         },
+        formDate:'',
 
         /*分页菜单数据参数*/
         pagination: {

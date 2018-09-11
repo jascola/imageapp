@@ -28,6 +28,7 @@
             <el-form-item label="封面虚拟路径">
               <span style="color: #dd6161;font-size: 16px">{{ props.row.indexpic }}</span>
             </el-form-item>
+            <!--标签的渲染可以 数组循环迭代-->
             <el-form-item label="标签">
               <span style="color: #dd6161;font-size: 16px">{{ props.row.tag }}</span>
             </el-form-item>
