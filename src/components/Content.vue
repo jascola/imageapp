@@ -94,8 +94,24 @@
               name: 'Login'
             });
           }
+        }).catch(error=>{
+          this.$message.error("请求失败");
         });
     },
+    created:function(){
+      this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
+          pageNo:this.pagination.currentpage,
+          pageSize:this.pagination.defaultsize,
+          param:this.menudata.input
+        }}).then(res=>{
+        const x = res.data.list;
+        this.tabledata.banner = x;
+        this.pagination.total = res.data.size;
+      }).catch(error=>{
+        this.$message.error("请求失败");
+      });
+    },
+
     components: {Carousel, Menu, Pagination, TableData},
     methods: {
       /*跳转函数*/
@@ -130,70 +146,49 @@
 
       /*改变pagesize*/
       handleSizeChange(val) {
-        console.log(val);
         this.pagination.defaultsize = val;
+        this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
+            pageNo:this.pagination.currentpage,
+            pageSize:this.pagination.defaultsize,
+            param:this.menudata.input
+          }}).then(res=>{
+          const x = res.data.list;
+          this.tabledata.banner = x;
+          this.pagination.total = res.data.size;
+        }).catch(error=>{
+          this.$message.error("请求失败");
+        });
       },
       /*跳页*/
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
         this.pagination.currentpage = val;
-        var data = {
-          currentpage: this.pagination.currentpage,
-          serchContent: this.serchContent,
-          pagesize: this.pagination.defaultsize
-        };
-        console.log(data);
-        const x = [{
-          id: '222',
-          imgDiscrete:
-            'fuck',
-          imgPath: 'http://localhost:8089/images/1/5.jpg'
-
-        }, {
-          id: '111',
-          imgDiscrete:
-            'fucks',
-          imgPath: 'http://localhost:8089/images/1/10.jpg'
-        }, {
-          id: '111',
-          imgDiscrete:
-            'fucks',
-          imgPath: 'http://localhost:8089/images/1/4.jpg'
-        }];
-        this.tabledata.banner = x;
-        this.pagination.total = 100;
-
-        //
+        this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
+            pageNo:this.pagination.currentpage,
+            pageSize:this.pagination.defaultsize,
+            param:this.menudata.input
+          }}).then(res=>{
+          const x = res.data.list;
+          this.tabledata.banner = x;
+          this.pagination.total = res.data.size;
+        }).catch(error=>{
+          this.$message.error("请求失败");
+        });
       },
 
 
       /*按照每页条数，以及输入框内容搜索*/
       serch: function () {
-        var data = {
-          serchContent: this.serchContent,
-          pagesize: this.pagination.defaultsize
-        };
-        console.log(data);
-        /*axios请求，拿到返回值对象（包含总记录数），遍历存入数组*/
-        const x = [{
-          id: '222',
-          imgDiscrete:
-            'fuck',
-          imgPath: 'http://localhost:8089/images/1/10.jpg'
-
-        }, {
-          id: '111',
-          imgDiscrete:
-            'fucks',
-          imgPath: 'http://localhost:8089/images/1/5.jpg'
-        }, {
-          id: '111',
-          imgDiscrete:
-            'fucks',
-          imgPath: 'http://localhost:8089/images/1/4.jpg'
-        }];
-        this.tabledata.banner = x;
-        this.pagination.total = 300;
+        this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
+            pageNo:this.pagination.currentpage,
+            pageSize:this.pagination.defaultsize,
+            param:this.menudata.input
+          }}).then(res=>{
+          const x = res.data.list;
+          this.tabledata.banner = x;
+          this.pagination.total = res.data.size;
+        }).catch(error=>{
+          this.$message.error("请求失败");
+        });
       }
     },
 

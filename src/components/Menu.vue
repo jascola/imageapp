@@ -21,7 +21,7 @@
     <el-menu-item index="3">消息中心</el-menu-item>
     <el-menu-item index="4">订单管理</el-menu-item>
 
-    <el-input v-model="menudata.input" placeholder="请输入内容"
+    <el-input v-model="menudata.input" placeholder="请输入相册名或作者名"
               style="width: 20%;height: 20%;position: relative;margin-top: 0.67%;margin-left: 35%"></el-input>
     <el-button type="primary" icon="el-icon-search" @click="toserch">搜索</el-button>
 

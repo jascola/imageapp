@@ -63,6 +63,8 @@
                   name: 'Content'
                 });
               }
+            }).catch(error=>{
+              this.$message.error("请求失败");
             });
           } else {
             console.log('error submit!!');

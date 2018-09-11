@@ -8,30 +8,47 @@
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="相册id">
-              <span style="color: #dd6161">{{ props.row.id }}</span>
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.id }}</span>
             </el-form-item>
-            <el-form-item label="相册路径">
-              <span style="color: #dd6161">{{ props.row.imgPath }}</span>
+            <el-form-item label="相册名">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.picname }}</span>
             </el-form-item>
-            <el-form-item label="相册描述">
-              <span style="color: #dd6161">{{ props.row.imgDiscrete }}</span>
+            <el-form-item label="作者名">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.authorname }}</span>
             </el-form-item>
-            <el-form-item label="征途">
-              <a href="javascript:void(0);" @click="router(props.row.imgPath,props.row.id)"><img
-                :src="props.row.imgPath" width="400px" height="400px"/></a>
+            <el-form-item label="物理路径">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.realdir }}</span>
             </el-form-item>
+            <el-form-item label="虚拟路径">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.virtualdir }}</span>
+            </el-form-item>
+            <el-form-item label="封面物理路径">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.indexrealdir }}</span>
+            </el-form-item>
+            <el-form-item label="封面虚拟路径">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.indexpic }}</span>
+            </el-form-item>
+            <el-form-item label="标签">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.tag }}</span>
+            </el-form-item>
+            <el-form-item label="相册图片数量">
+              <span style="color: #dd6161;font-size: 16px">{{ props.row.counts }}</span>
+            </el-form-item>
+
           </el-form>
         </template>
 
       </el-table-column>
 
-      <el-table-column prop="id" label="ID" sortable header-align="center" align="center" fixed></el-table-column>
+      <el-table-column prop="id" label="相册ID" sortable header-align="center" align="center" fixed></el-table-column>
 
-      <el-table-column prop="imgDiscrete" label="图片描述">
+      <el-table-column prop="picname" label="相册名">
 
       </el-table-column>
 
-      <el-table-column prop="imgPath" label="图片路径">
+      <el-table-column prop="authorname" label="作者名">
+      </el-table-column>
+      <el-table-column prop="tag" label="标签">
       </el-table-column>
 
       <el-table-column label="操作" v-if="tabledata.adminseen">
