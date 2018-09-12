@@ -8,7 +8,8 @@
     <TableData :tabledata="tabledata" @add="handleAdd" @delete="handleDelete" @edit="handleEdit" @router="router">
     </TableData>
     <!--分页菜单-->
-    <Pagination :pagination="pagination" @currentChange="handleCurrentChange" @sizeChange="handleSizeChange"></Pagination>
+    <Pagination :pagination="pagination" @currentChange="handleCurrentChange"
+                @sizeChange="handleSizeChange"></Pagination>
 
     <div>
       <!--对话框-->
@@ -24,12 +25,9 @@
             <el-input v-model="form.authorname" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="标签" :label-width="form.formLabelWidth">
-            <div v-for="x in form.tag">
-            <el-button type="primary" >{{x.text}}</el-button>
-            </div>
-            <el-button type="primary" @click="">添加</el-button>
+            <el-tag v-for="x in form.tag">{{x.text}}</el-tag>
+            <el-button type="primary" @click="addtag" size="mini">添加</el-button>
           </el-form-item>
-
           <!--文件上传-->
           <el-upload
             multiple
@@ -38,6 +36,7 @@
             :auto-upload="false"
             :http-request="uploadFile"
             ref="upload"
+            :before-upload="beforeUpload"
           >
             <i class="el-icon-plus"></i>
           </el-upload>
@@ -48,32 +47,22 @@
             :auto-upload="false"
             :http-request="uploadFile2"
             ref="upload2"
+            limit="1"
           >
             <i class="el-icon-plus"></i>
           </el-upload>
 
-
-          <el-button @click="subPicForm">上传</el-button>
-
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.add_dialog_seen = false">取 消</el-button>
-          <el-button type="primary" @click="submitEditDialog()">确 定</el-button>
+          <el-button type="primary" @click="submitDialog">确 定</el-button>
         </div>
       </el-dialog>
 
 
       <el-dialog title="编辑相册" :visible.sync="dialogFormVisible.edit_dialog_seen">
         <el-form :model="form">
-          <el-form-item label="相册名称" :label-width="form.formLabelWidth">
-            <el-input v-model="form.name" auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="活动区域" :label-width="form.formLabelWidth">
-            <el-select v-model="form.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
+
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.edit_dialog_seen = false">取 消</el-button>
@@ -84,15 +73,7 @@
 
       <el-dialog title="删除相册" :visible.sync="dialogFormVisible.delete_dialog_seen">
         <el-form :model="form">
-          <el-form-item label="相册名称" :label-width="form.formLabelWidth">
-            <el-input v-model="form.name" auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="活动区域" :label-width="form.formLabelWidth">
-            <el-select v-model="form.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
+
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.delete_dialog_seen = false">取 消</el-button>
@@ -113,48 +94,101 @@
   import TableData from './TableData'
 
   export default {
-    beforeCreate:function(){
-        this.axios.get('http://localhost:8089/test/user/check.html'
-        ).then(res => {
-          if (res.data.status === "success") {
-            this.$store.commit('login');
-            this.menudata.name = res.data.messages[0];
-          }
-          else {
-            this.$message.error("登录失效，请登录！");
-            this.$router.push({
-              name: 'Login'
-            });
-          }
-        }).catch(error=>{
-          this.$message.error("请求失败");
-        });
+    components: {Carousel, Menu, Pagination, TableData},
+    /*vue创建成功前，判断是否登录*/
+    beforeCreate: function () {
+      this.axios.get('http://localhost:8089/test/user/check.html'
+      ).then(res => {
+        if (res.data.status === "success") {
+          this.$store.commit('login');
+          this.menudata.name = res.data.messages[0];
+        }
+        else {
+          this.$message.error("登录失效，请登录！");
+          this.$router.push({
+            name: 'Login'
+          });
+        }
+      }).catch(error => {
+        this.$message.error("请求失败");
+      });
     },
-    created:function(){
-      this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
-          pageNo:this.pagination.currentpage,
-          pageSize:this.pagination.defaultsize,
-          param:this.menudata.input
-        }}).then(res=>{
+    /*创建成功后请求所有数据*/
+    created: function () {
+      this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        params: {
+          pageNo: this.pagination.currentpage,
+          pageSize: this.pagination.defaultsize,
+          param: this.menudata.input
+        }
+      }).then(res => {
         const x = res.data.list;
         this.tabledata.banner = x;
         this.pagination.total = res.data.size;
-      }).catch(error=>{
+      }).catch(error => {
         this.$message.error("请求失败");
       });
     },
 
-    components: {Carousel, Menu, Pagination, TableData},
     methods: {
-      addtag:function(){
-        this.form.tag.push({text:'jascola'});
+      /*添加标签*/
+      addtag: function () {
+        this.form.tag.push({text: 'jascola'});
       },
+      beforeUpload: function () {
 
-      submitEditDialog:function(){
+      },
+      /*重写默认的上传方法*/
+      uploadFile: function (file) {
+        var i = 0;
+        for (; i < this.form.filelist.x.length; i++) {
+          if (this.form.filelist.x[i] === file.file.name) {
+            break;
+          }
+        }
+        if (i >= this.form.filelist.x.length) {
+          this.formDate.append('images', file.file);
+          this.form.filelist.x.push(file.file.name);
+        }
+      },
+      uploadFile2: function (file) {
+        this.formDate.append('image', file.file);
+      },
+      /*提交文件上传的表单*/
+      submitDialog: function () {
+        this.$refs.upload.submit();
+        this.$refs.upload2.submit();
+        console.log(this.form.filelist.x);
+        this.formDate.append('id', this.form.id);
+        this.formDate.append('picname', this.form.picname);
+        this.formDate.append('authorname', this.form.authorname);
+        let you = "";
+        for (let i = 0; i < this.form.tag.length; i++) {
+          if (i != this.form.tag.length - 1) {
+            you = you + this.form.tag[i].text + ',';
+          }
+          else {
+            you = you + this.form.tag[i].text;
+          }
+        }
+        this.formDate.append('tag', you);
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        };
+        this.axios.post("http://localhost:8089/test/pic/upload.html", this.formDate, config).then(res => {
 
+        }).catch(res => {
 
-
-        this.dialogFormVisible.edit_dialog_seen = false;
+        });
+        this.formDate.delete('id');
+        this.formDate.delete('picname');
+        this.formDate.delete('authorname');
+        this.formDate.delete('tag');
+        this.formDate.delete('images');
+        this.formDate.delete('image');
+        this.dialogFormVisible.add_dialog_seen = false;
       },
       /*跳转函数*/
       router(data) {
@@ -168,14 +202,6 @@
       },
       /*编辑*/
       handleEdit(data) {
-        this.form.id = data.row.id;
-        this.form.picname = data.row.picname;
-        this.form.authorname = data.row.authorname;
-        let x = data.row.tag.split(',');
-        this.form.tag = [];
-        for (let i=0;i<x.length;i++){
-          this.form.tag.push({text:x[i]});
-        }
         this.dialogFormVisible.edit_dialog_seen = true;
       },
       /*删除*/
@@ -187,38 +213,52 @@
       /*添加*/
       /*操作对话框*/
       handleAdd(data) {
-        console.log(data.index);
-        console.log(data.row.id, data.row.imgPath);
+        this.form.id = data.row.id;
+        this.form.picname = data.row.picname;
+        this.form.authorname = data.row.authorname;
+        let x = data.row.tag.split(',');
+        this.form.tag = [];
+        for (let i = 0; i < x.length; i++) {
+          this.form.tag.push({text: x[i]});
+        }
+        if(this.form.filelist.id!=data.row.id){
+          this.form.filelist.x=[];
+          this.form.filelist.id = data.row.id;
+        }
         this.dialogFormVisible.add_dialog_seen = true;
       },
 
       /*改变pagesize*/
       handleSizeChange(val) {
         this.pagination.defaultsize = val;
-        this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
-            pageNo:this.pagination.currentpage,
-            pageSize:this.pagination.defaultsize,
-            param:this.menudata.input
-          }}).then(res=>{
+        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          params: {
+            pageNo: this.pagination.currentpage,
+            pageSize: this.pagination.defaultsize,
+            param: this.menudata.input
+          }
+        }).then(res => {
           const x = res.data.list;
           this.tabledata.banner = x;
           this.pagination.total = res.data.size;
-        }).catch(error=>{
+        }).catch(error => {
           this.$message.error("请求失败");
         });
       },
       /*跳页*/
       handleCurrentChange(val) {
         this.pagination.currentpage = val;
-        this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
-            pageNo:this.pagination.currentpage,
-            pageSize:this.pagination.defaultsize,
-            param:this.menudata.input
-          }}).then(res=>{
+        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          params: {
+            pageNo: this.pagination.currentpage,
+            pageSize: this.pagination.defaultsize,
+            param: this.menudata.input
+          }
+        }).then(res => {
           const x = res.data.list;
           this.tabledata.banner = x;
           this.pagination.total = res.data.size;
-        }).catch(error=>{
+        }).catch(error => {
           this.$message.error("请求失败");
         });
       },
@@ -226,52 +266,21 @@
 
       /*按照每页条数，以及输入框内容搜索*/
       serch: function () {
-        this.axios.get('http://localhost:8089/test/user/getpic.html',{params:{
-            pageNo:this.pagination.currentpage,
-            pageSize:this.pagination.defaultsize,
-            param:this.menudata.input
-          }}).then(res=>{
+        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          params: {
+            pageNo: this.pagination.currentpage,
+            pageSize: this.pagination.defaultsize,
+            param: this.menudata.input
+          }
+        }).then(res => {
           const x = res.data.list;
           this.tabledata.banner = x;
           this.pagination.total = res.data.size;
-        }).catch(error=>{
+        }).catch(error => {
           this.$message.error("请求失败");
         });
       }
     },
-    uploadFile(file){
-      this.formDate.append('images', file.file);
-    },
-    uploadFile2(file){
-      this.formDate.append('image', file.file);
-    },
-
-    subPicForm(){
-      this.formDate = new FormData();
-      this.$refs.upload.submit();
-      this.$refs.upload2.submit();
-      this.formDate.append('id', this.form.id);
-      this.formDate.append('picname', this.form.picname);
-      this.formDate.append('authorname', this.form.authorname);
-      let you="";
-      for(let i=0;i<this.form.tag.length;i++){
-        if(i!=this.form.tag.length-1){
-          you = you + this.form.tag[i].text +',';
-        }
-      }
-      this.formDate.append('tag', you);
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      axios.post("http://localhost:8089/test/pic/upload.html", this.formDate,config).then( res => {
-        console.log(res)
-      }).catch( res => {
-        console.log(res)
-      })
-    }
-    ,
 
     data() {
       return {
@@ -300,9 +309,10 @@
           picname: null,
           authorname: null,
           tag: null,
+          filelist:{id:'',x:[]},
           formLabelWidth: '120px', /*dailog样式*/
         },
-        formDate:'',
+        formDate: new FormData(),
 
         /*分页菜单数据参数*/
         pagination: {
