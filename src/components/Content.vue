@@ -25,10 +25,14 @@
             <el-input v-model="form.authorname" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="标签" :label-width="form.formLabelWidth">
-            <el-tag style="position: relative;margin-right: 2px" v-for="x in form.tag">{{x.text}}</el-tag>
-            <el-button type="primary" @click="addtag" size="mini">添加</el-button>
+            <el-tag style="position: relative;margin-right: 2px" v-for="x in form.tag" closable :key="form.tag.text" @close="handleClose(x)">>
+              {{x.text}}
+            </el-tag>
+            <el-button type="primary" @click="dialogFormVisible.tag_dialog_seen = true" size="mini" icon="el-icon-plus">
+            </el-button>
           </el-form-item>
           <!--文件上传-->
+          <el-form-item label="相册上传" :label-width="form.formLabelWidth">
           <el-upload
             multiple
             action=""
@@ -41,7 +45,8 @@
           >
             <i class="el-icon-plus"></i>
           </el-upload>
-
+          </el-form-item>
+          <el-form-item label="封面上传" :label-width="form.formLabelWidth">
           <el-upload
             action=""
             list-type="picture-card"
@@ -53,7 +58,7 @@
           >
             <i class="el-icon-plus"></i>
           </el-upload>
-
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.add_dialog_seen = false">取 消</el-button>
@@ -65,7 +70,7 @@
         <el-input v-model="inputTag" auto-complete="off"></el-input>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.tag_dialog_seen = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible.edit_dialog_seen = true">确 定</el-button>
+          <el-button type="primary" @click="addtag">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -152,6 +157,9 @@
       beforeUpload: function () {
 
       },
+      handleClose(xx) {
+        this.form.tag.splice(this.form.tag.indexOf(xx), 1);
+      },
       /*重写默认的上传方法*/
       uploadFile: function (file, lists) {
         var i = 0;
@@ -202,6 +210,12 @@
           this.formDate.delete('image');
           this.FileList.lists = [];
           this.FileList.list = [];
+          if(res.data.status==='success'){
+            this.$message.success(res.data.messages[0]);
+          }
+          else{
+            this.$message.error(res.data.messages[0]);
+          }
         }).catch(res => {
           this.formDate.delete('id');
           this.formDate.delete('picname');
