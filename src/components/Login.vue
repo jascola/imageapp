@@ -62,7 +62,10 @@
                 this.$router.push({
                   name: 'UserContent'
                 });
+              }else{
+                this.$message.error(res.data.messages[0]);
               }
+
             }).catch(error=>{
               this.$message.error("请求失败");
             });
