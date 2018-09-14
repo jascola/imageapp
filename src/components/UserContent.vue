@@ -9,11 +9,11 @@
 
     <div style="position: relative;margin-left: 11%;margin-top: 1%">
       <div v-for="td in tds" style="float: left;margin-right: 5%" class="polaroid">
-        <a href="javascript:void(0);" @click="router(td.url,td.content)">
-          <img :src="td.url" alt="Norway" style="width:100%" height="350px"/>
+        <a href="javascript:void(0);" @click="router(td.indexpic,td.picname)">
+          <img :src="td.indexpic" alt="Norway" style="width:100%" height="350px"/>
         </a>
         <div class="container">
-          <p>{{td.content}}</p>
+          <p>{{td.picname}}</p>
         </div>
       </div>
     </div>
@@ -32,7 +32,40 @@
 
   export default {
     components: {Carousel, Menu, Pagination},
-    name: "",
+    name: "UserContent",
+    beforeCreate: function () {
+      this.axios.get('http://localhost:8089/test/user/check.html'
+      ).then(res => {
+        if (res.data.status === "success") {
+          this.$store.commit('login');
+          this.menudata.name = res.data.messages[0];
+        }
+        else {
+          this.$message.error(res.data.messages[0]);
+          this.$router.push({
+            name: 'Login'
+          });
+        }
+      }).catch(error => {
+        this.$message.error("请求失败");
+      });
+    },
+
+    created: function () {
+      this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        params: {
+          pageNo: this.pagination.currentpage,
+          pageSize: this.pagination.defaultsize,
+          param: this.menudata.input
+        }
+      }).then(res => {
+        const x = res.data.list;
+        this.tds = x;
+        this.pagination.total = res.data.size;
+      }).catch(error => {
+        this.$message.error("请求失败");
+      });
+    },
     methods: {
       router(url, content) {
         console.log(url, content);
@@ -46,24 +79,61 @@
       },
       /*改变pagesize*/
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
         this.pagination.defaultsize = val;
+        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          params: {
+            pageNo: this.pagination.currentpage,
+            pageSize: this.pagination.defaultsize,
+            param: this.menudata.input
+          }
+        }).then(res => {
+          const x = res.data.list;
+          this.tds = x;
+          this.pagination.total = res.data.size;
+        }).catch(error => {
+          this.$message.error("请求失败");
+        });
       },
       /*跳页*/
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
         this.pagination.currentpage = val;
+        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          params: {
+            pageNo: this.pagination.currentpage,
+            pageSize: this.pagination.defaultsize,
+            param: this.menudata.input
+          }
+        }).then(res => {
+          const x = res.data.list;
+          this.tds = x;
+          this.pagination.total = res.data.size;
+        }).catch(error => {
+          this.$message.error("请求失败");
+        });
       },
 
       /*按照每页条数，以及输入框内容搜索*/
       serch: function () {
+        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          params: {
+            pageNo: this.pagination.currentpage,
+            pageSize: this.pagination.defaultsize,
+            param: this.menudata.input
+          }
+        }).then(res => {
+          const x = res.data.list;
+          this.tds = x;
+          this.pagination.total = res.data.size;
+        }).catch(error => {
+          this.$message.error("请求失败");
+        });
       }
     },
     data() {
       return {
         menudata: {
           input: '',
-          name: 'jascola,欢迎你！'
+          name: ''
         },
         pagination: {
           total: 400,
@@ -71,31 +141,7 @@
           defaultsize: 10,
           currentpage: 1
         },
-
-        tds: [{url: 'http://localhost:8089/images/1/10.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/2.jpg', content: 'a image'},
-          {url: 'http://localhost:8089/images/1/10.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'},
-          {url: 'http://localhost:8089/images/1/3.jpg', content: 'this is a image'}],
+        tds: [],
 
       }
     }

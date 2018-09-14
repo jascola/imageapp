@@ -10,10 +10,9 @@
     <!--分页菜单-->
     <Pagination :pagination="pagination" @currentChange="handleCurrentChange"
                 @sizeChange="handleSizeChange"></Pagination>
-
     <div>
       <!--对话框-->
-      <el-dialog title="增加相册" :visible.sync="dialogFormVisible.add_dialog_seen">
+      <el-dialog title="更新相册" :visible.sync="dialogFormVisible.edit_dialog_seen">
         <el-form :model="form">
           <el-form-item label="相册ID" :label-width="form.formLabelWidth">
             <el-input v-model="form.id" auto-complete="off" :disabled="true"></el-input>
@@ -25,7 +24,8 @@
             <el-input v-model="form.authorname" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="标签" :label-width="form.formLabelWidth">
-            <el-tag style="position: relative;margin-right: 2px" v-for="x in form.tag" closable :key="form.tag.text" @close="handleClose(x)">>
+            <el-tag style="position: relative;margin-right: 2px" v-for="x in form.tag" closable :key="form.tag.text"
+                    @close="handleClose(x)">
               {{x.text}}
             </el-tag>
             <el-button type="primary" @click="dialogFormVisible.tag_dialog_seen = true" size="mini" icon="el-icon-plus">
@@ -33,35 +33,35 @@
           </el-form-item>
           <!--文件上传-->
           <el-form-item label="相册上传" :label-width="form.formLabelWidth">
-          <el-upload
-            multiple
-            action=""
-            list-type="picture-card"
-            :auto-upload="false"
-            :http-request="uploadFile"
-            ref="upload"
-            :file-list="FileList.lists"
-            :before-upload="beforeUpload"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
+            <el-upload
+              multiple
+              action=""
+              list-type="picture-card"
+              :auto-upload="false"
+              :http-request="uploadFile"
+              ref="upload"
+              :file-list="FileList.lists"
+              :before-upload="beforeUpload"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
           </el-form-item>
           <el-form-item label="封面上传" :label-width="form.formLabelWidth">
-          <el-upload
-            action=""
-            list-type="picture-card"
-            :auto-upload="false"
-            :http-request="uploadFile2"
-            ref="upload2"
-            :file-list="FileList.list"
-            limit="1"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
+            <el-upload
+              action=""
+              list-type="picture-card"
+              :auto-upload="false"
+              :http-request="uploadFile2"
+              ref="upload2"
+              :file-list="FileList.list"
+              limit="1"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible.add_dialog_seen = false">取 消</el-button>
+          <el-button @click="reset_edit">取 消</el-button>
           <el-button type="primary" @click="submitDialog">确 定</el-button>
         </div>
       </el-dialog>
@@ -69,30 +69,85 @@
       <el-dialog title="添加标签" :visible.sync="dialogFormVisible.tag_dialog_seen">
         <el-input v-model="inputTag" auto-complete="off"></el-input>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible.tag_dialog_seen = false">取 消</el-button>
+          <el-button @click="dialogFormVisible.tag_dialog_seen=false">取 消</el-button>
           <el-button type="primary" @click="addtag">确 定</el-button>
         </div>
       </el-dialog>
 
 
-      <el-dialog title="编辑相册" :visible.sync="dialogFormVisible.edit_dialog_seen">
+      <el-dialog title="增加相册" :visible.sync="dialogFormVisible.add_dialog_seen">
         <el-form :model="form">
-
+          <el-form-item label="相册ID" :label-width="form.formLabelWidth">
+            <el-input v-model="form.id" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="相册名称" :label-width="form.formLabelWidth">
+            <el-input v-model="form.picname" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="作者名" :label-width="form.formLabelWidth">
+            <el-input v-model="form.authorname" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="图片数量" :label-width="form.formLabelWidth">
+            <el-input v-model="form.counts" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="标签" :label-width="form.formLabelWidth">
+            <el-tag style="position: relative;margin-right: 2px" v-for="x in form.tag" closable :key="form.tag.text"
+                    @close="handleClose(x)">
+              {{x.text}}
+            </el-tag>
+            <el-button type="primary" @click="dialogFormVisible.tag_dialog_seen = true" size="mini" icon="el-icon-plus">
+            </el-button>
+          </el-form-item>
+          <!--文件上传-->
+          <el-form-item label="相册上传" :label-width="form.formLabelWidth">
+            <el-upload
+              multiple
+              action=""
+              list-type="picture-card"
+              :auto-upload="false"
+              :http-request="uploadFile"
+              ref="upload"
+              :file-list="FileList.lists"
+              :before-upload="beforeUpload"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="封面上传" :label-width="form.formLabelWidth">
+            <el-upload
+              action=""
+              list-type="picture-card"
+              :auto-upload="false"
+              :http-request="uploadFile2"
+              ref="upload2"
+              :file-list="FileList.list"
+              limit="1"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible.edit_dialog_seen = false">取 消</el-button>
-          <el-button type="primary" @click="addtag">确 定</el-button>
+          <el-button @click="reset_add">取 消</el-button>
+          <el-button type="primary" @click="submitDialog">确 定</el-button>
         </div>
       </el-dialog>
 
 
       <el-dialog title="删除相册" :visible.sync="dialogFormVisible.delete_dialog_seen">
         <el-form :model="form">
-
+          <el-form-item label="相册ID" :label-width="form.formLabelWidth">
+            <el-input v-model="form.id" auto-complete="off" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="相册名称" :label-width="form.formLabelWidth">
+            <el-input v-model="form.picname" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="作者名" :label-width="form.formLabelWidth">
+            <el-input v-model="form.authorname" auto-complete="off"></el-input>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible.delete_dialog_seen = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible.delete_dialog_seen = false">确 定</el-button>
+          <el-button type="primary" @click="deletePic">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -112,16 +167,16 @@
     components: {Carousel, Menu, Pagination, TableData},
     /*vue创建成功前，判断是否登录*/
     beforeCreate: function () {
-      this.axios.get('http://localhost:8089/test/user/check.html'
+      this.axios.get('http://localhost:8089/test/admin/check.html'
       ).then(res => {
         if (res.data.status === "success") {
           this.$store.commit('login');
           this.menudata.name = res.data.messages[0];
         }
         else {
-          this.$message.error("登录失效，请登录！");
+          this.$message.error(res.data.messages[0]);
           this.$router.push({
-            name: 'Login'
+            name: 'AdminLogin'
           });
         }
       }).catch(error => {
@@ -146,9 +201,36 @@
     },
 
     methods: {
+      deletePic:function(){
+        this.axios.get('http://localhost:8089/test/pic/deletepic.html',{params:{
+          id:this.form.id
+          }}
+        ).then(res => {
+          if (res.data.status === "success") {
+            this.$message.success(res.data.messages[0]);
+            setTimeout('window.location.reload();','1000');
+          }
+          else {
+            this.$message.error(res.data.messages[0]);
+          }
+        }).catch(error => {
+          this.$message.error("请求失败");
+        });
+        this.dialogFormVisible.delete_dialog_seen=false;
+      },
+      reset_add: function () {
+        this.FileList.lists = [];
+        this.FileList.list = [];
+        this.dialogFormVisible.add_dialog_seen = false;
+      },
+      reset_edit: function () {
+        this.FileList.lists = [];
+        this.FileList.list = [];
+        this.dialogFormVisible.edit_dialog_seen = false;
+      },
       /*添加标签*/
       addtag: function () {
-        if (this.inputTag != '' || this.inputTag != null) {
+        if (this.inputTag != '' && this.inputTag != null) {
           this.form.tag.push({text: this.inputTag});
         }
         this.inputTag = '';
@@ -158,7 +240,7 @@
 
       },
       handleClose(xx) {
-        this.form.tag.splice(this.form.tag.indexOf(xx), 1);
+        this.form.tag.pop(xx);
       },
       /*重写默认的上传方法*/
       uploadFile: function (file, lists) {
@@ -186,6 +268,7 @@
         this.formDate.append('id', this.form.id);
         this.formDate.append('picname', this.form.picname);
         this.formDate.append('authorname', this.form.authorname);
+        this.formDate.append('counts', this.form.counts);
         let you = "";
         for (let i = 0; i < this.form.tag.length; i++) {
           if (i != this.form.tag.length - 1) {
@@ -208,14 +291,16 @@
           this.formDate.delete('tag');
           this.formDate.delete('images');
           this.formDate.delete('image');
+          this.formDate.delete('counts');
           this.FileList.lists = [];
           this.FileList.list = [];
-          if(res.data.status==='success'){
+          if (res.data.status === 'success') {
             this.$message.success(res.data.messages[0]);
           }
-          else{
+          else {
             this.$message.error(res.data.messages[0]);
           }
+          setTimeout('window.location.reload();','1000');
         }).catch(res => {
           this.formDate.delete('id');
           this.formDate.delete('picname');
@@ -223,9 +308,11 @@
           this.formDate.delete('tag');
           this.formDate.delete('images');
           this.formDate.delete('image');
+          this.formDate.delete('counts');
           this.FileList.lists = [];
           this.FileList.list = [];
         });
+        this.dialogFormVisible.edit_dialog_seen = false;
         this.dialogFormVisible.add_dialog_seen = false;
       },
       /*跳转函数*/
@@ -240,20 +327,10 @@
       },
       /*编辑*/
       handleEdit(data) {
-        this.dialogFormVisible.edit_dialog_seen = true;
-      },
-      /*删除*/
-      handleDelete(data) {
-        console.log(data.index);
-        console.log(data.row.id, data.row.imgPath);
-        this.dialogFormVisible.delete_dialog_seen = true;
-      },
-      /*添加*/
-      /*操作对话框*/
-      handleAdd(data) {
         this.form.id = data.row.id;
         this.form.picname = data.row.picname;
         this.form.authorname = data.row.authorname;
+        this.form.counts = this.pagination.total;
         let x = data.row.tag.split(',');
         this.form.tag = [];
         for (let i = 0; i < x.length; i++) {
@@ -263,6 +340,24 @@
           this.form.filelist.x = [];
           this.form.filelist.id = data.row.id;
         }
+        this.dialogFormVisible.edit_dialog_seen = true;
+      },
+      /*删除*/
+      handleDelete(data) {
+        this.form.id = data.row.id;
+        this.form.picname = data.row.picname;
+        this.form.authorname = data.row.authorname;
+        this.dialogFormVisible.delete_dialog_seen = true;
+      },
+      /*添加*/
+      /*操作对话框*/
+      handleAdd() {
+        this.form.id = '';
+        this.form.picname = '';
+        this.form.authorname = '';
+        this.form.counts = '';
+        this.form.tag = [];
+        this.form.filelist.x = [];
         this.dialogFormVisible.add_dialog_seen = true;
       },
 
@@ -350,6 +445,7 @@
           id: null,
           picname: null,
           authorname: null,
+          counts: null,
           tag: null,
           filelist: {id: '', x: []},
           formLabelWidth: '120px', /*dailog样式*/

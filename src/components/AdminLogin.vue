@@ -52,7 +52,7 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.axios.post('http://localhost:8089/test/user/login.html',qs.stringify(
+            this.axios.post('http://localhost:8089/test/admin/login.html',qs.stringify(
               {phone:this.ruleForm.number,password:this.ruleForm.password}
             )).then(res=>{
               if(res.data.status==="success"){
@@ -60,7 +60,7 @@
                 this.$store.commit('login');
                 this.$store.commit('setMessage',res.data.messages[1]);
                 this.$router.push({
-                  name: 'UserContent'
+                  name: 'Content'
                 });
               }
             }).catch(error=>{

@@ -60,17 +60,15 @@
           </el-button>
           <el-button
             size="mini"
-            type="primary"
-            @click="handleAdd(scope.$index, scope.row)">添加
-          </el-button>
-          <el-button
-            size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+    <div>
+      <el-button size="medium" type="primary" icon="el-icon-plus" circle @click="handleAdd"></el-button>
+    </div>
   </div>
 </template>
 
@@ -84,8 +82,8 @@
       handleDelete(index, row) {
         this.$emit('delete', {index: index, row: row})
       },
-      handleAdd(index, row) {
-        this.$emit('add', {index: index, row: row})
+      handleAdd() {
+        this.$emit('add', {})
       },
       router(path,id){
         this.$emit('router', {path: path, id: id})
