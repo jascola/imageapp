@@ -9,7 +9,7 @@
 
     <div style="position: relative;margin-left: 11%;margin-top: 1%">
       <div v-for="td in tds" style="float: left;margin-right: 5%" class="polaroid">
-        <a href="javascript:void(0);" @click="router(td.indexpic,td.picname)">
+        <a href="javascript:void(0);" @click="router(td.virtualdir,td.counts,td.id,td.picname,td.tag,td.indexpic)">
           <img :src="td.indexpic" alt="Norway" style="width:100%" height="350px"/>
         </a>
         <div class="container">
@@ -46,8 +46,6 @@
             name: 'Login'
           });
         }
-      }).catch(error => {
-        this.$message.error("请求失败");
       });
     },
 
@@ -67,13 +65,16 @@
       });
     },
     methods: {
-      router(url, content) {
-        console.log(url, content);
+      router(virtualdir, counts,id,picname,tag,indexpic) {
         this.$router.push({
           name: 'SingleImage',
           query: {
-            content: content,
-            url: url
+            virtualdir:virtualdir,
+            counts:counts,
+            id:id,
+            picname:picname,
+            tag:tag,
+            indexpic:indexpic
           }
         });
       },
