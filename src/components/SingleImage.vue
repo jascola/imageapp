@@ -72,8 +72,6 @@
       for (let i = 0; i < x.length; i++) {
         this.routeData.tag.push({text: x[i]});
       }
-      this.pagination.defaultsize = 2;
-      this.pagination.pagesize = [1,2,3];
     },
     data() {
       return {
