@@ -30,7 +30,7 @@
             </el-form-item>
             <!--标签的渲染可以 数组循环迭代-->
             <el-form-item label="标签">
-              <el-tag style="position: relative;margin-right: 2px" v-for="x in toTag(props.row.tag)" :key="this.toTag(props.row.tag).text">
+              <el-tag style="position: relative;margin-right: 2px" v-for="x in toTag(props.row.tag)">
                 {{x.text}}
               </el-tag>
             </el-form-item>
