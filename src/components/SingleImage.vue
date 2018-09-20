@@ -62,16 +62,25 @@
       });
     },
     created: function () {
-      this.routeData.virtualdir = this.$route.query.virtualdir;
-      this.pagination.total = this.$route.query.counts;
-      this.routeData.id = this.$route.query.id;
-      this.routeData.picname = this.$route.query.picname;
-      this.routeData.indexpic = this.$route.query.indexpic;
-      this.routeData.imgsrc = this.turnTOJpg(1);
-      let x = this.$route.query.tag.split(',');
-      for (let i = 0; i < x.length; i++) {
-        this.routeData.tag.push({text: x[i]});
-      }
+      this.axios.get('http://localhost:8089/test/user/selectid.html',{params:{
+        id:this.$route.query.id
+        }}
+      ).then(res => {
+        let xx = res.data[0];
+        this.routeData.virtualdir = xx.virtualdir;
+        this.pagination.total = xx.counts;
+        this.routeData.id = xx.id;
+        this.routeData.picname = xx.picname;
+        this.routeData.authorname = xx.authorname;
+        this.routeData.indexpic = xx.indexpic;
+        this.routeData.imgsrc = this.turnTOJpg(1);
+        let x = xx.tag.split(',');
+        for (let i = 0; i < x.length; i++) {
+          this.routeData.tag.push({text: x[i]});
+        }
+      }).catch(error => {
+        this.$message.error("请求失败");
+      });
     },
     data() {
       return {
@@ -79,6 +88,7 @@
           virtualdir: null,
           id: null,
           picname: null,
+          authorname:null,
           tag: [],
           indexpic: null,
           imgsrc: null

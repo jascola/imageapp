@@ -9,7 +9,7 @@
 
     <div style="position: relative;margin-left: 11%;margin-top: 1%">
       <div v-for="td in tds" style="float: left;margin-right: 5%" class="polaroid">
-        <a href="javascript:void(0);" @click="router(td.virtualdir,td.counts,td.id,td.picname,td.tag,td.indexpic)">
+        <a href="javascript:void(0);" @click="router(td.id)">
           <img :src="td.indexpic" alt="Norway" style="width:100%" height="350px"/>
         </a>
         <div class="container">
@@ -65,16 +65,11 @@
       });
     },
     methods: {
-      router(virtualdir, counts,id,picname,tag,indexpic) {
+      router(id) {
         this.$router.push({
           name: 'SingleImage',
           query: {
-            virtualdir:virtualdir,
-            counts:counts,
-            id:id,
-            picname:picname,
-            tag:tag,
-            indexpic:indexpic
+            id:id
           }
         });
       },

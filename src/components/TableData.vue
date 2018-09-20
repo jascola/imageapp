@@ -30,7 +30,9 @@
             </el-form-item>
             <!--标签的渲染可以 数组循环迭代-->
             <el-form-item label="标签">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.tag }}</span>
+              <el-tag style="position: relative;margin-right: 2px" v-for="x in toTag(props.row.tag)" :key="this.toTag(props.row.tag).text">
+                {{x.text}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="相册图片数量">
               <span style="color: #dd6161;font-size: 16px">{{ props.row.counts }}</span>
@@ -48,8 +50,6 @@
       </el-table-column>
 
       <el-table-column prop="authorname" label="作者名">
-      </el-table-column>
-      <el-table-column prop="tag" label="标签">
       </el-table-column>
 
       <el-table-column label="操作" v-if="tabledata.adminseen">
@@ -76,6 +76,14 @@
   export default {
     name: "TableData",
     methods: {
+      toTag:function(tag){
+        let xx =[];
+        let x = tag.split(',');
+        for (let i = 0; i < x.length; i++) {
+          xx.push({text: x[i]});
+        }
+        return xx;
+      },
       handleEdit(index, row) {
         this.$emit('edit', {index: index, row: row})
       },
