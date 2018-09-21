@@ -3,13 +3,13 @@
     <div>
       {{routeData.picname}}
     </div>
-    <el-tag style="position: relative;margin-right: 2px" v-for="x in routeData.tag" :key="routeData.tag.text" >
-      <el-button size="mini" type="primary" @click="selectByTag(x.text)">{{x.text}}</el-button>
+    <el-tag style="position: relative;margin-right: 2px" v-for="x in routeData.tag" :key="routeData.tag.text">
+      <a href="javascript:void (0);" @click="selectByTag(x.text)">{{x.text}}</a>
     </el-tag>
     <img :src="routeData.imgsrc"/>
     <!--分页菜单-->
     <Pagination :pagination="pagination" @currentChange="handleCurrentChange"
-                 style="position: relative;margin-top: 2%">
+                style="position: relative;margin-top: 2%">
     </Pagination>
   </div>
 </template>
@@ -21,7 +21,7 @@
   export default {
     components: {Pagination},
     methods: {
-      selectByTag:function(tag){
+      selectByTag: function (tag) {
         console.log(tag);
       },
 
@@ -62,9 +62,11 @@
       });
     },
     created: function () {
-      this.axios.get('http://localhost:8089/test/user/selectid.html',{params:{
-        id:this.$route.query.id
-        }}
+      this.axios.get('http://localhost:8089/test/user/selectid.html', {
+          params: {
+            id: this.$route.query.id
+          }
+        }
       ).then(res => {
         let xx = res.data[0];
         this.routeData.virtualdir = xx.virtualdir;
@@ -88,7 +90,7 @@
           virtualdir: null,
           id: null,
           picname: null,
-          authorname:null,
+          authorname: null,
           tag: [],
           indexpic: null,
           imgsrc: null
@@ -121,6 +123,10 @@
 
   .demo-table-expand {
     font-size: 0;
+  }
+
+  a {
+    text-decoration: none;
   }
 
   .demo-table-expand .el-form-item {

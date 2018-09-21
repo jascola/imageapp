@@ -129,7 +129,9 @@
       return {
         menudata: {
           input: '',
-          name: ''
+          name: '',
+          content:'请输入相册名或作者名',
+          flag:false
         },
         pagination: {
           total: 400,

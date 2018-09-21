@@ -8,34 +8,51 @@
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="相册id">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.id }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.id}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="相册名">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.picname }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.picname}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="作者名">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.authorname }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.authorname}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="物理路径">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.realdir }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.realdir}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="虚拟路径">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.virtualdir }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.virtualdir}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="封面物理路径">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.indexrealdir }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.indexrealdir}}
+              </el-tag>
             </el-form-item>
             <el-form-item label="封面虚拟路径">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.indexpic }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.indexpic}}
+              </el-tag>
             </el-form-item>
             <!--标签的渲染可以 数组循环迭代-->
             <el-form-item label="标签">
-              <el-tag style="position: relative;margin-right: 2px" v-for="x in toTag(props.row.tag)">
+              <el-tag style="position: relative;margin-right: 2px" v-for="x in toTag(props.row.tag)"
+                      :key="toTag(props.row.tag).text">
                 {{x.text}}
               </el-tag>
             </el-form-item>
             <el-form-item label="相册图片数量">
-              <span style="color: #dd6161;font-size: 16px">{{ props.row.counts }}</span>
+              <el-tag style="position: relative;margin-right: 2px">
+                {{props.row.counts}}
+              </el-tag>
             </el-form-item>
 
           </el-form>
@@ -76,8 +93,8 @@
   export default {
     name: "TableData",
     methods: {
-      toTag:function(tag){
-        let xx =[];
+      toTag: function (tag) {
+        let xx = [];
         let x = tag.split(',');
         for (let i = 0; i < x.length; i++) {
           xx.push({text: x[i]});
@@ -93,7 +110,7 @@
       handleAdd() {
         this.$emit('add', {})
       },
-      router(path,id){
+      router(path, id) {
         this.$emit('router', {path: path, id: id})
       }
     },

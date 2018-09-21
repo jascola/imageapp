@@ -423,7 +423,9 @@
         /*菜单数据*/
         menudata: {
           input: '',
-          name: ''
+          name: '',
+          content:'请输入相册名或作者名',
+          flag:false
         },
 
         /*表格数据*/
