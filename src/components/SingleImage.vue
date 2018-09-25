@@ -1,12 +1,27 @@
 <template>
   <div>
+    <Menu :menudata="menudata" @serch="serch"></Menu>
     <div>
-      {{routeData.picname}}
+      <div style="float: right">
+        <div style="margin-bottom: 2%">
+          <span style="font-size: 20px;">{{routeData.picname}}</span>
+        </div>
+        <div style="margin-bottom: 2%">
+          <el-tag style="position: relative;margin-right: 2px" v-for="x in routeData.tag" :key="routeData.tag.text">
+            <a href="javascript:void (0);" @click="selectByTag(x.text)">{{x.text}}</a>
+          </el-tag>
+        </div>
+        <div>
+          <span style="font-size: 14px">喜欢就收藏一波吧！</span>
+          <el-button type="success" :icon="styleclass" circle></el-button>
+        </div>
+      </div>
+      <div style="position: relative;margin-left: 15%;margin-top: 1%;">
+        <img :src="routeData.imgsrc"/>
+      </div>
     </div>
-    <el-tag style="position: relative;margin-right: 2px" v-for="x in routeData.tag" :key="routeData.tag.text">
-      <a href="javascript:void (0);" @click="selectByTag(x.text)">{{x.text}}</a>
-    </el-tag>
-    <img :src="routeData.imgsrc"/>
+    <!--清除浮动-->
+    <div style="clear: both"></div>
     <!--分页菜单-->
     <Pagination :pagination="pagination" @currentChange="handleCurrentChange"
                 style="position: relative;margin-top: 2%">
@@ -17,9 +32,10 @@
 <script>
 
   import Pagination from './Pagination'
+  import Menu from './Menu'
 
   export default {
-    components: {Pagination},
+    components: {Pagination, Menu},
     methods: {
       selectByTag: function (tag) {
         console.log(tag);
@@ -49,7 +65,7 @@
       ).then(res => {
         if (res.data.status === "success") {
           this.$store.commit('login');
-          /*this.menudata.name = res.data.messages[0];*/
+          this.menudata.name = res.data.messages[0];
         }
         else {
           this.$message.error(res.data.messages[0]);
@@ -83,9 +99,25 @@
       }).catch(error => {
         this.$message.error("请求失败");
       });
+      /*验证是否收藏*/
+      this.axios.get('http://localhost:8089/test/user/checkcollected.html',{
+          params: {
+            id: this.$route.query.id
+          }
+        }
+      ).then(res => {
+        this.styleclass = res.data[0];
+      });
     },
     data() {
       return {
+        styleclass: null,
+        menudata: {
+          input: '',
+          name: '',
+          content: '此页面禁止搜索',
+          flag: true
+        },
         routeData: {
           virtualdir: null,
           id: null,
