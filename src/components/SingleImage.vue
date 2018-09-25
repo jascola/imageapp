@@ -2,7 +2,7 @@
   <div>
     <Menu :menudata="menudata" @serch="serch"></Menu>
     <div>
-      <div style="float: right">
+      <div style="float: left">
         <div style="margin-bottom: 2%">
           <span style="font-size: 20px;">{{routeData.picname}}</span>
         </div>
