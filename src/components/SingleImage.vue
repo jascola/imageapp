@@ -67,7 +67,12 @@
         }
       },
       selectByTag: function (tag) {
-        console.log(tag);
+        this.$router.push({
+          name:'TagQueryResult',
+          query:{
+            tag:tag
+          }
+        })
       },
 
       turnTOJpg: function (index) {

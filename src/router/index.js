@@ -5,6 +5,7 @@ import SingleImage from '../components/SingleImage'
 import UserContent from '../components/UserContent'
 import Login from '../components/Login'
 import AdminLogin from '../components/AdminLogin'
+import TagQueryResult from '../components/TagQueryResult'
 import Vuex from 'vuex'
 
 Vue.use(Router);
@@ -36,6 +37,11 @@ export default new Router({
       name:'AdminLogin',
       path:'/adminlogin',
       component:AdminLogin
+    },
+    {
+      name:'TagQueryResult',
+      path:'/tagqueryresult',
+      component:TagQueryResult
     }
   ]
 })

@@ -11,8 +11,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
 import store from './store'
+import VueLazyload from 'vue-lazyload'
 
-
+Vue.use(VueLazyload);
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
