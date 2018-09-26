@@ -13,7 +13,7 @@
         </div>
         <div>
           <span style="font-size: 14px">喜欢就收藏一波吧！</span>
-          <el-button type="success" :icon="styleclass" circle></el-button>
+          <el-button type="success" :icon="styleclass" circle @click="collect"></el-button>
         </div>
       </div>
       <div style="position: relative;margin-left: 15%;margin-top: 1%;">
@@ -37,6 +37,35 @@
   export default {
     components: {Pagination, Menu},
     methods: {
+      collect: function () {
+        if (this.styleclass === 'el-icon-star-on') {
+          this.axios.get('http://localhost:8089/test/user/outcollect.html', {
+              params: {
+                id: this.$route.query.id
+              }
+            }
+          ).then(res => {
+            if (res.data.status === 'success')
+              this.$message.success(res.data.messages[0]);
+            this.styleclass = 'el-icon-star-off';
+          }).catch(error => {
+            this.$message.error("请求失败");
+          });
+        } else if (this.styleclass === 'el-icon-star-off') {
+          this.axios.get('http://localhost:8089/test/user/collect.html', {
+              params: {
+                id: this.$route.query.id
+              }
+            }
+          ).then(res => {
+            if (res.data.status === 'success')
+              this.$message.success(res.data.messages[0]);
+            this.styleclass = 'el-icon-star-on';
+          }).catch(error => {
+            this.$message.error("请求失败");
+          });
+        }
+      },
       selectByTag: function (tag) {
         console.log(tag);
       },
@@ -100,7 +129,7 @@
         this.$message.error("请求失败");
       });
       /*验证是否收藏*/
-      this.axios.get('http://localhost:8089/test/user/checkcollected.html',{
+      this.axios.get('http://localhost:8089/test/user/checkcollected.html', {
           params: {
             id: this.$route.query.id
           }
