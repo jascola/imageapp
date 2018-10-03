@@ -31,8 +31,8 @@
 
 <script>
 
-  import Pagination from './Pagination'
-  import Menu from './Menu'
+  import Pagination from '../units/Pagination'
+  import Menu from '../units/Menu'
 
   export default {
     components: {Pagination, Menu},

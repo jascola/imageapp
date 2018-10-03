@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Content from '../components/Content'
-import SingleImage from '../components/SingleImage'
-import UserContent from '../components/UserContent'
-import Login from '../components/Login'
-import AdminLogin from '../components/AdminLogin'
-import TagQueryResult from '../components/TagQueryResult'
+import Content from '../components/page/Content'
+import SingleImage from '../components/page/SingleImage'
+import UserContent from '../components/page/UserContent'
+import Login from '../components/page/Login'
+import AdminLogin from '../components/page/AdminLogin'
+import TagQueryResult from '../components/page/TagQueryResult'
 import Vuex from 'vuex'
 
 Vue.use(Router);

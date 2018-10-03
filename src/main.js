@@ -12,7 +12,9 @@ import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
 import store from './store'
 import VueLazyload from 'vue-lazyload'
+import live2d4vue from 'live2d4vue'
 
+Vue.use(live2d4vue);
 Vue.use(VueLazyload);
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;

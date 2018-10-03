@@ -158,10 +158,10 @@
 
 <script>
 
-  import Carousel from './Carousel'
-  import Menu from './Menu'
-  import Pagination from './Pagination'
-  import TableData from './TableData'
+  import Carousel from '../units/Carousel'
+  import Menu from '../units/Menu'
+  import Pagination from '../units/Pagination'
+  import TableData from '../units/TableData'
 
   export default {
     components: {Carousel, Menu, Pagination, TableData},
