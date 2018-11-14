@@ -294,11 +294,14 @@
           this.formDate.delete('counts');
           this.FileList.lists = [];
           this.FileList.list = [];
-          if (res.data.status === 'success') {
-            this.$message.success(res.data.messages[0]);
+          if (res.data === '0') {
+            this.$message.success("上传成功");
           }
-          else {
-            this.$message.error(res.data.messages[0]);
+          if (res.data === '1') {
+            this.$message.error("上传失败");
+          }
+          if (res.data === '2') {
+            this.$message.error("文件不能为空");
           }
           setTimeout('window.location.reload();','1000');
         }).catch(res => {
