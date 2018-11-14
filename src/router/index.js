@@ -7,7 +7,6 @@ import Login from '../components/page/Login'
 import AdminLogin from '../components/page/AdminLogin'
 import TagQueryResult from '../components/page/TagQueryResult'
 import Vuex from 'vuex'
-
 Vue.use(Router);
 Vue.use(Vuex);
 export default new Router({

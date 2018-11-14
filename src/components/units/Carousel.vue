@@ -16,10 +16,10 @@
     data() {
       return {
         urls: [
-          {url: 'http://localhost:8089/images/index/Koala.jpg', id: 1},
-          {url: 'http://localhost:8089/images/index/3.jpg', id: 2},
-          {url: 'http://localhost:8089/images/index/4.jpg', id: 3},
-          {url: 'http://localhost:8089/images/index/5.jpg', id: 4}
+          {url: this.$store.state.base+'images/index/Koala.jpg', id: 1},
+          {url: this.$store.state.base+'images/index/3.jpg', id: 2},
+          {url: this.$store.state.base+'images/index/4.jpg', id: 3},
+          {url: this.$store.state.base+'images/index/5.jpg', id: 4}
         ]
       }
     }

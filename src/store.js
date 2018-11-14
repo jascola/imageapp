@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 const state = {
   flag: false,
-  message:''
+  message:'',
+  base:'http://localhost:8089/'
 };
 
 const mutations = {

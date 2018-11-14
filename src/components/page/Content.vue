@@ -167,7 +167,7 @@
     components: {Carousel, Menu, Pagination, TableData},
     /*vue创建成功前，判断是否登录*/
     beforeCreate: function () {
-      this.axios.get('http://localhost:8089/test/admin/check.html'
+      this.axios.get(this.$store.state.base+'test/admin/check.html'
       ).then(res => {
         if (res.data.status === "success") {
           this.$store.commit('login');
@@ -185,7 +185,7 @@
     },
     /*创建成功后请求所有数据*/
     created: function () {
-      this.axios.get('http://localhost:8089/test/user/getpic.html', {
+      this.axios.get(this.$store.state.base+'test/user/getpic.html', {
         params: {
           pageNo: this.pagination.currentpage,
           pageSize: this.pagination.defaultsize,
@@ -202,7 +202,7 @@
 
     methods: {
       deletePic:function(){
-        this.axios.get('http://localhost:8089/test/pic/deletepic.html',{params:{
+        this.axios.get(this.$store.state.base+'test/pic/deletepic.html',{params:{
           id:this.form.id
           }}
         ).then(res => {
@@ -284,7 +284,7 @@
             'Content-Type': 'multipart/form-data'
           }
         };
-        this.axios.post("http://localhost:8089/test/pic/upload.html", this.formDate, config).then(res => {
+        this.axios.post(this.$store.state.base+"test/pic/upload.html", this.formDate, config).then(res => {
           this.formDate.delete('id');
           this.formDate.delete('picname');
           this.formDate.delete('authorname');
@@ -364,7 +364,7 @@
       /*改变pagesize*/
       handleSizeChange(val) {
         this.pagination.defaultsize = val;
-        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        this.axios.get(this.$store.state.base+'test/user/getpic.html', {
           params: {
             pageNo: this.pagination.currentpage,
             pageSize: this.pagination.defaultsize,
@@ -381,7 +381,7 @@
       /*跳页*/
       handleCurrentChange(val) {
         this.pagination.currentpage = val;
-        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        this.axios.get(this.$store.state.base+'test/user/getpic.html', {
           params: {
             pageNo: this.pagination.currentpage,
             pageSize: this.pagination.defaultsize,
@@ -399,7 +399,7 @@
 
       /*按照每页条数，以及输入框内容搜索*/
       serch: function () {
-        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        this.axios.get(this.$store.state.base+'test/user/getpic.html', {
           params: {
             pageNo: this.pagination.currentpage,
             pageSize: this.pagination.defaultsize,

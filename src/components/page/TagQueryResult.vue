@@ -33,7 +33,7 @@
     components: {Carousel, Menu, Pagination},
     name: "TagQueryResult",
     beforeCreate: function () {
-      this.axios.get('http://localhost:8089/test/user/check.html'
+      this.axios.get(this.$store.state.base+'test/user/check.html'
       ).then(res => {
         if (res.data.status === "success") {
           this.$store.commit('login');
@@ -75,7 +75,7 @@
       /*按照每页条数，以及输入框内容搜索*/
       serch: function () {
         if (this.menudata.input != '' && this.menudata.input != null) {
-          this.axios.get('http://localhost:8089/test/user/tagquery.html', {
+          this.axios.get(this.$store.state.base+'test/user/tagquery.html', {
             params: {
               pageNo: this.pagination.currentpage,
               pageSize: this.pagination.defaultsize,
@@ -89,7 +89,7 @@
             this.$message.error("请求失败");
           });
         }else{
-          this.axios.get('http://localhost:8089/test/user/getpic.html', {
+          this.axios.get(this.$store.state.base+'test/user/getpic.html', {
             params: {
               pageNo: this.pagination.currentpage,
               pageSize: this.pagination.defaultsize,

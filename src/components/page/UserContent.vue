@@ -34,7 +34,7 @@
     components: {Carousel, Menu, Pagination},
     name: "UserContent",
     beforeCreate: function () {
-      this.axios.get('http://localhost:8089/test/user/check.html'
+      this.axios.get(this.$store.state.base+'test/user/check.html'
       ).then(res => {
         if (res.data.status === "success") {
           this.$store.commit('login');
@@ -50,7 +50,7 @@
     },
 
     created: function () {
-      this.axios.get('http://localhost:8089/test/user/getpic.html', {
+      this.axios.get(this.$store.state.base+'test/user/getpic.html', {
         params: {
           pageNo: this.pagination.currentpage,
           pageSize: this.pagination.defaultsize,
@@ -76,7 +76,7 @@
       /*改变pagesize*/
       handleSizeChange(val) {
         this.pagination.defaultsize = val;
-        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        this.axios.get(this.$store.state.base+'test/user/getpic.html', {
           params: {
             pageNo: this.pagination.currentpage,
             pageSize: this.pagination.defaultsize,
@@ -93,7 +93,7 @@
       /*跳页*/
       handleCurrentChange(val) {
         this.pagination.currentpage = val;
-        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        this.axios.get(this.$store.state.base+'test/user/getpic.html', {
           params: {
             pageNo: this.pagination.currentpage,
             pageSize: this.pagination.defaultsize,
@@ -110,7 +110,7 @@
 
       /*按照每页条数，以及输入框内容搜索*/
       serch: function () {
-        this.axios.get('http://localhost:8089/test/user/getpic.html', {
+        this.axios.get(this.$store.state.base+'test/user/getpic.html', {
           params: {
             pageNo: this.pagination.currentpage,
             pageSize: this.pagination.defaultsize,

@@ -39,7 +39,7 @@
     methods: {
       collect: function () {
         if (this.styleclass === 'el-icon-star-on') {
-          this.axios.get('http://localhost:8089/test/user/outcollect.html', {
+          this.axios.get(this.$store.state.base+'test/user/outcollect.html', {
               params: {
                 id: this.$route.query.id
               }
@@ -52,7 +52,7 @@
             this.$message.error("请求失败");
           });
         } else if (this.styleclass === 'el-icon-star-off') {
-          this.axios.get('http://localhost:8089/test/user/collect.html', {
+          this.axios.get(this.$store.state.base+'test/user/collect.html', {
               params: {
                 id: this.$route.query.id
               }
@@ -95,7 +95,7 @@
       }
     },
     beforeCreate: function () {
-      this.axios.get('http://localhost:8089/test/user/check.html'
+      this.axios.get(this.$store.state.base+'test/user/check.html'
       ).then(res => {
         if (res.data.status === "success") {
           this.$store.commit('login');
@@ -112,7 +112,7 @@
       });
     },
     created: function () {
-      this.axios.get('http://localhost:8089/test/user/selectid.html', {
+      this.axios.get(this.$store.state.base+'test/user/selectid.html', {
           params: {
             id: this.$route.query.id
           }
@@ -134,7 +134,7 @@
         this.$message.error("请求失败");
       });
       /*验证是否收藏*/
-      this.axios.get('http://localhost:8089/test/user/checkcollected.html', {
+      this.axios.get(this.$store.state.base+'test/user/checkcollected.html', {
           params: {
             id: this.$route.query.id
           }
