@@ -294,16 +294,16 @@
           this.formDate.delete('counts');
           this.FileList.lists = [];
           this.FileList.list = [];
-          if (res.data === '0') {
+          if (res.data === 0) {
+            setTimeout('window.location.reload();','1000');
             this.$message.success("上传成功");
           }
-          if (res.data === '1') {
+          if (res.data === 1) {
             this.$message.error("上传失败");
           }
-          if (res.data === '2') {
+          if (res.data === 2) {
             this.$message.error("文件不能为空");
           }
-          setTimeout('window.location.reload();','1000');
         }).catch(res => {
           this.formDate.delete('id');
           this.formDate.delete('picname');
