@@ -77,9 +77,6 @@
 
       <el-dialog title="增加相册" :visible.sync="dialogFormVisible.add_dialog_seen">
         <el-form :model="form">
-          <el-form-item label="相册ID" :label-width="form.formLabelWidth">
-            <el-input v-model="form.id" auto-complete="off"></el-input>
-          </el-form-item>
           <el-form-item label="相册名称" :label-width="form.formLabelWidth">
             <el-input v-model="form.picname" auto-complete="off"></el-input>
           </el-form-item>
